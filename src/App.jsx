@@ -27,6 +27,14 @@ function App() {
     setCart(prev => prev.filter(i => i.id !== id))
   }
 
+  function updateQty(id, delta) {
+    setCart(prev =>
+      prev
+        .map(i => i.id === id ? { ...i, qty: i.qty + delta } : i)
+        .filter(i => i.qty > 0)   // auto-remove if qty hits 0
+    )
+  }
+
   const cartCount = cart.reduce((sum, i) => sum + i.qty, 0)
 
   return (
@@ -38,7 +46,7 @@ function App() {
         <Route path="/menu"        element={<Menu onAddToCart={addToCart} />} />
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/contact"     element={<Contact />} />
-        <Route path="/cart"        element={<Cart cart={cart} onRemove={removeFromCart} />} />
+        <Route path="/cart"        element={<Cart cart={cart} onRemove={removeFromCart} onUpdateQty={updateQty} />} />
       </Routes>
       <Footer />
     </BrowserRouter>
