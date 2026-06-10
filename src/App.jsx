@@ -38,7 +38,7 @@ function App() {
   const cartCount = cart.reduce((sum, i) => sum + i.qty, 0)
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/brew-haven-react/">
       <div className="grain-overlay" aria-hidden="true"></div>
       <Navbar cartCount={cartCount} />
       <Routes>
