@@ -4,7 +4,7 @@ export default function CoffeeCard({ item, onAddToCart, delay = 0 }) {
       <div className="card-img-wrap">
         {item.img ? (
           <img
-            src={`/assets/images/${item.img}.png`}
+            src={`${import.meta.env.BASE_URL}assets/images/${item.img}.png`}
             alt={item.name}
             className="card-img"
           />
