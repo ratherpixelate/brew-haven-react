@@ -2,9 +2,15 @@ import { Link } from 'react-router-dom'
 import CoffeeCard from './CoffeeCard'
 import { menuItems } from '../data/menuData'
 
-// Show only the featured 4 items on homepage
 const featured = menuItems.filter(i =>
-  ['Dark Velvet Espresso', 'Honey Oat Latte', 'Midnight Cold Brew', 'Sunrise Pour Over'].includes(i.name)
+  [
+    'Dark Velvet Espresso',
+    'Honey Oat Latte',
+    'Midnight Cold Brew',
+    'Sunrise Pour Over',
+    'Almond Croissant',
+    'Espresso Affogato',
+  ].includes(i.name)
 )
 
 export default function MenuSection({ onAddToCart }) {
@@ -25,7 +31,7 @@ export default function MenuSection({ onAddToCart }) {
               key={item.id}
               item={item}
               onAddToCart={onAddToCart}
-              delay={i * 80}
+              delay={i * 60}
             />
           ))}
         </div>
