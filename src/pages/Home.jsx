@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Clock, MapPin, Coffee, Star, Sprout, Flame, Scale } from 'lucide-react'
 import HeroSection from '../components/HeroSection'
 import MenuSection from '../components/MenuSection'
 
@@ -27,10 +28,10 @@ const testimonials = [
 ]
 
 const stats = [
-  { num: '6+',  label: 'Years Brewing' },
-  { num: '12',  label: 'Origin Farms'  },
-  { num: '40+', label: 'Menu Items'    },
-  { num: '★',   label: 'Top Rated'     },
+  { num: '6+', label: 'Years Brewing', icon: Clock },
+  { num: '12', label: 'Origin Estates', icon: MapPin },
+  { num: '40+', label: 'Curated Brews', icon: Coffee },
+  { num: '4.9★', label: 'Community Rated', icon: Star },
 ]
 
 export default function Home({ onAddToCart }) {
@@ -62,7 +63,7 @@ export default function Home({ onAddToCart }) {
 
           {/* text — grid-column: 1 */}
           <div className="about-text">
-            <div className="section-header reveal visible" style={{ textAlign: 'left' }}>
+            <div className="section-header reveal visible" style={{ textAlign: 'left', marginBottom: '1.5rem' }}>
               <p className="section-eyebrow">Our Story</p>
               <h2 className="section-title">More than<br /><em>just coffee</em></h2>
             </div>
@@ -71,19 +72,67 @@ export default function Home({ onAddToCart }) {
               people could slow down — really slow down — and savour something made with care.
             </p>
             <p className="reveal visible" style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-              Today we source directly from small farms across Coorg, Chikmagalur, and East Africa,
+              Today we source directly from small estates across Coorg, Chikmagalur, and East Africa,
               roasting in small batches to preserve what makes each bean special.
             </p>
+
+            <div className="craft-pillars reveal visible">
+              <div className="craft-pillar">
+                <div className="craft-pillar-icon">
+                  <Sprout size={18} />
+                </div>
+                <div>
+                  <h4>Direct Farm Sourcing</h4>
+                  <p>Single-origin micro-lots sourced directly from small growers with transparent fair pricing.</p>
+                </div>
+              </div>
+
+              <div className="craft-pillar">
+                <div className="craft-pillar-icon">
+                  <Flame size={18} />
+                </div>
+                <div>
+                  <h4>In-House Drum Roasting</h4>
+                  <p>Roasted weekly in small 5kg batches to lock in natural origin aromatics and sweetness.</p>
+                </div>
+              </div>
+
+              <div className="craft-pillar">
+                <div className="craft-pillar-icon">
+                  <Scale size={18} />
+                </div>
+                <div>
+                  <h4>Precision Extraction</h4>
+                  <p>Every pour ground to order and calibrated to the tenth of a gram for balanced flavour.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="about-founder reveal visible">
+              <p className="about-founder-quote">
+                "Coffee isn't just a morning routine; it's a moment of pause in a rushed world."
+              </p>
+              <div className="about-founder-meta">
+                <span className="founder-name">Arun Nair</span>
+                <span className="founder-role">Head Roaster & Co-Founder · Pattom, Thiruvananthapuram</span>
+              </div>
+            </div>
           </div>
 
-          {/* stats — grid-column: 2, inner 2×2 grid via CSS */}
+          {/* stats — grid-column: 2, balanced 2×2 grid */}
           <div className="about-stats">
-            {stats.map((s, i) => (
-              <div key={i} className="stat-card reveal visible" style={{ '--delay': `${i * 80}ms` }}>
-                <span className="stat-num">{s.num}</span>
-                <span className="stat-label">{s.label}</span>
-              </div>
-            ))}
+            {stats.map((s, i) => {
+              const Icon = s.icon
+              return (
+                <div key={i} className="stat-card reveal visible" style={{ '--delay': `${i * 80}ms` }}>
+                  <div className="stat-icon-wrap">
+                    <Icon size={20} />
+                  </div>
+                  <span className="stat-num">{s.num}</span>
+                  <span className="stat-label">{s.label}</span>
+                </div>
+              )
+            })}
           </div>
 
         </div>
