@@ -25,8 +25,7 @@ export const menuItems = [
     price: 220,
     name: 'Flat White',
     desc: 'Ristretto double shot, microfoam whole milk. Intense, velvety, no-nonsense.',
-    img: null,
-    placeholder: 'espresso',
+    img: 'flatwhite',
   },
   {
     id: 4,
@@ -35,8 +34,7 @@ export const menuItems = [
     price: 230,
     name: 'Cappuccino',
     desc: 'Equal parts espresso, steamed milk, and dry foam. The original trinity.',
-    img: null,
-    placeholder: 'latte',
+    img: 'cappuccino',
   },
   {
     id: 5,
@@ -45,8 +43,7 @@ export const menuItems = [
     price: 200,
     name: 'Americano',
     desc: 'Double ristretto over hot water. Clean, bold, endlessly drinkable.',
-    img: null,
-    placeholder: 'espresso',
+    img: 'americano',
   },
   {
     id: 6,
@@ -75,8 +72,7 @@ export const menuItems = [
     price: 290,
     name: 'Iced Brown Sugar Latte',
     desc: 'Espresso shaken with brown sugar syrup over ice, topped with oat milk.',
-    img: null,
-    placeholder: 'latte',
+    img: 'brownsugar',
   },
   {
     id: 9,
@@ -85,8 +81,7 @@ export const menuItems = [
     price: 260,
     name: 'Sparkling Tonic Espresso',
     desc: 'Double shot over chilled tonic water. Effervescent, bitter-sweet, surprising.',
-    img: null,
-    placeholder: 'coldbrew',
+    img: 'tonic',
   },
 
   // Filter
@@ -106,8 +101,7 @@ export const menuItems = [
     price: 240,
     name: 'Aeropress',
     desc: 'Concentrated, smooth, and quick. Our daily driver for clean coffee.',
-    img: null,
-    placeholder: 'pourover',
+    img: 'aeropress',
   },
 
   // Non-Coffee
@@ -118,8 +112,7 @@ export const menuItems = [
     price: 180,
     name: 'Chamomile Honey',
     desc: 'Loose-leaf chamomile, raw honey, a squeeze of lemon. Calm in a cup.',
-    img: null,
-    placeholder: 'noncoffee',
+    img: 'chamomile',
   },
   {
     id: 13,
@@ -129,7 +122,6 @@ export const menuItems = [
     name: 'Ceremonial Matcha Latte',
     desc: 'Grade-A ceremonial matcha whisked with steamed oat milk. Earthy and vivid.',
     img: 'matcha',
-    placeholder: 'matcha',
   },
 
   // Food
@@ -140,8 +132,7 @@ export const menuItems = [
     price: 120,
     name: 'Almond Croissant',
     desc: 'Laminated dough, frangipane filling, toasted almonds. Buttery, flaky, perfect.',
-    img: null,
-    placeholder: 'food',
+    img: 'croissant',
   },
   {
     id: 15,
@@ -150,8 +141,7 @@ export const menuItems = [
     price: 220,
     name: 'Avocado Toast',
     desc: 'Sourdough, smashed avocado, chilli flakes, poached egg, micro greens.',
-    img: null,
-    placeholder: 'food',
+    img: 'avocadotoast',
   },
 ];
 
