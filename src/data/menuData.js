@@ -128,7 +128,7 @@ export const menuItems = [
     price: 290,
     name: 'Ceremonial Matcha Latte',
     desc: 'Grade-A ceremonial matcha whisked with steamed oat milk. Earthy and vivid.',
-    img: null,
+    img: 'matcha',
     placeholder: 'matcha',
   },
 

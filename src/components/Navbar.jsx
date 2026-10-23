@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { ShoppingBag } from 'lucide-react'
 import { useTheme } from '../hooks/useTheme'
+import { useCart } from '../context/cartContext'
 
-export default function Navbar({ cartCount }) {
+export default function Navbar({ cartCount: propCartCount }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+
   const { toggleTheme } = useTheme()
+  const { cartCount: ctxCartCount, setIsDrawerOpen } = useCart()
+  const cartCount = propCartCount !== undefined ? propCartCount : ctxCartCount
+
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -16,23 +22,33 @@ export default function Navbar({ cartCount }) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Close mobile nav on route change
   useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === 'Escape' && mobileOpen) {
+        closeMobile()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [mobileOpen])
+
+  function closeMobile() {
     setMobileOpen(false)
     document.body.style.overflow = ''
-  }, [location])
+  }
 
-  const toggleMobile = () => {
+  function toggleMobile() {
     setMobileOpen(prev => {
-      document.body.style.overflow = prev ? '' : 'hidden'
-      return !prev
+      const next = !prev
+      document.body.style.overflow = next ? 'hidden' : ''
+      return next
     })
   }
 
-  // Handles links like /#about and /#testimonials
-  // If already on home, just scroll. Otherwise navigate to / then scroll.
-  const handleAnchorLink = (e, hash) => {
+  function handleAnchorLink(e, hash) {
     e.preventDefault()
+    closeMobile()
+
     const scrollToHash = () => {
       const el = document.querySelector(hash)
       if (el) {
@@ -46,66 +62,95 @@ export default function Navbar({ cartCount }) {
       scrollToHash()
     } else {
       navigate('/')
-      // Wait for page to render before scrolling
       setTimeout(scrollToHash, 100)
     }
-    setMobileOpen(false)
-    document.body.style.overflow = ''
   }
 
   return (
     <>
       <nav className={`navbar${scrolled ? ' scrolled' : ''}`} id="navbar">
         <div className="nav-inner">
-          <Link to="/" className="nav-logo">
+          <Link to="/" className="nav-logo" onClick={closeMobile}>
             <span className="logo-text">Brew Haven</span>
           </Link>
 
           <ul className="nav-links">
-            <li><Link to="/menu" className="nav-link">Menu</Link></li>
             <li>
-              <a href="#about" className="nav-link" onClick={e => handleAnchorLink(e, '#about')}>
+              <NavLink
+                to="/menu"
+                className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+              >
+                Menu
+              </NavLink>
+            </li>
+            <li>
+              <a
+                href="#about"
+                className="nav-link"
+                onClick={e => handleAnchorLink(e, '#about')}
+              >
                 Our Story
               </a>
             </li>
             <li>
-              <a href="#testimonials" className="nav-link" onClick={e => handleAnchorLink(e, '#testimonials')}>
+              <a
+                href="#testimonials"
+                className="nav-link"
+                onClick={e => handleAnchorLink(e, '#testimonials')}
+              >
                 Reviews
               </a>
             </li>
-            <li><Link to="/contact" className="nav-link">Contact</Link></li>
             <li>
-              <Link to="/cart" className="nav-link" style={{ position: 'relative' }}>
-                Cart
+              <NavLink
+                to="/contact"
+                className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
+              >
+                Contact
+              </NavLink>
+            </li>
+            <li>
+              <button
+                type="button"
+                className="nav-link"
+                onClick={() => setIsDrawerOpen(true)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  position: 'relative',
+                }}
+                aria-label={`Open bag with ${cartCount} items`}
+              >
+                <ShoppingBag size={15} style={{ marginRight: '5px' }} />
+                <span>Bag</span>
                 {cartCount > 0 && (
-                  <span style={{
-                    background: 'var(--gold)',
-                    color: '#fff',
-                    borderRadius: '50%',
-                    fontSize: '0.65rem',
-                    padding: '1px 5px',
-                    marginLeft: '4px',
-                    verticalAlign: 'super',
-                  }}>
+                  <span key={cartCount} className="cart-badge bump">
                     {cartCount}
                   </span>
                 )}
-              </Link>
+              </button>
             </li>
-            <li><Link to="/reservation" className="nav-link nav-cta">Reserve a Seat</Link></li>
+            <li>
+              <NavLink to="/reservation" className="nav-link nav-cta">
+                Reserve a Seat
+              </NavLink>
+            </li>
           </ul>
 
           <div className="nav-actions">
             <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
               <svg className="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5"/>
-                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="23" y2="12" /><line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
               </svg>
               <svg className="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
               </svg>
             </button>
             <button
@@ -120,22 +165,75 @@ export default function Navbar({ cartCount }) {
         </div>
       </nav>
 
+      <div
+        className={`mobile-nav-backdrop${mobileOpen ? ' open' : ''}`}
+        onClick={closeMobile}
+        aria-hidden="true"
+      />
+
       <div className={`mobile-nav${mobileOpen ? ' open' : ''}`} aria-hidden={!mobileOpen}>
         <ul>
-          <li><Link to="/menu" className="mobile-nav-link">Menu</Link></li>
           <li>
-            <a href="#about" className="mobile-nav-link" onClick={e => handleAnchorLink(e, '#about')}>
+            <NavLink to="/menu" className="mobile-nav-link" onClick={closeMobile}>
+              Menu
+            </NavLink>
+          </li>
+          <li>
+            <a
+              href="#about"
+              className="mobile-nav-link"
+              onClick={e => handleAnchorLink(e, '#about')}
+            >
               Our Story
             </a>
           </li>
           <li>
-            <a href="#testimonials" className="mobile-nav-link" onClick={e => handleAnchorLink(e, '#testimonials')}>
+            <a
+              href="#testimonials"
+              className="mobile-nav-link"
+              onClick={e => handleAnchorLink(e, '#testimonials')}
+            >
               Reviews
             </a>
           </li>
-          <li><Link to="/contact" className="mobile-nav-link">Contact</Link></li>
-          <li><Link to="/cart" className="mobile-nav-link">Cart {cartCount > 0 && `(${cartCount})`}</Link></li>
-          <li><Link to="/reservation" className="mobile-nav-link mobile-cta">Reserve a Seat</Link></li>
+          <li>
+            <NavLink to="/contact" className="mobile-nav-link" onClick={closeMobile}>
+              Contact
+            </NavLink>
+          </li>
+          <li>
+            <button
+              type="button"
+              className="mobile-nav-link"
+              onClick={() => {
+                closeMobile()
+                setIsDrawerOpen(true)
+              }}
+              style={{
+                width: '100%',
+                textAlign: 'left',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <span>Order Bag</span>
+              {cartCount > 0 && (
+                <span key={cartCount} className="cart-badge bump">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+          </li>
+          <li>
+            <NavLink
+              to="/reservation"
+              className="mobile-nav-link mobile-cta"
+              onClick={closeMobile}
+            >
+              Reserve a Seat
+            </NavLink>
+          </li>
         </ul>
       </div>
     </>

@@ -103,12 +103,45 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="map-placeholder reveal visible" style={{ '--delay': '300ms' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-              <span>Map coming soon</span>
+            <div
+              className="contact-info-card reveal visible"
+              style={{
+                '--delay': '300ms',
+                flexDirection: 'column',
+                gap: '0.85rem',
+                background: 'radial-gradient(circle at top right, rgba(200, 147, 74, 0.12), transparent 70%), var(--bg-card)',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                  Open Today · 7 AM – 10 PM
+                </span>
+                <span style={{ fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gold)' }}>
+                  Pattom Café
+                </span>
+              </div>
+
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                Located right near the MG College junction, with curbside bicycle parking and indoor seating.
+              </p>
+
+              <a
+                href="https://maps.google.com/?q=Pattom,Thiruvananthapuram,Kerala"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline"
+                style={{
+                  fontSize: '0.78rem',
+                  padding: '0.5rem 1rem',
+                  alignSelf: 'flex-start',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                }}
+              >
+                <span>Get Directions</span>
+                <span>↗</span>
+              </a>
             </div>
           </div>
 

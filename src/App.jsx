@@ -1,54 +1,72 @@
-import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'sonner'
+import { CartProvider } from './context/CartContext'
+import { useCart } from './context/cartContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import CartDrawer from './components/CartDrawer'
+import CheckoutModal from './components/CheckoutModal'
 import Home from './pages/Home'
 import Menu from './pages/Menu'
 import Reservation from './pages/Reservation'
 import Contact from './pages/Contact'
 import Cart from './pages/Cart'
 
-function App() {
-  const [cart, setCart] = useState([])
-
-  function addToCart(item) {
-    setCart(prev => {
-      const exists = prev.find(i => i.id === item.id)
-      if (exists) {
-        return prev.map(i =>
-          i.id === item.id ? { ...i, qty: i.qty + 1 } : i
-        )
-      }
-      return [...prev, { ...item, qty: 1 }]
-    })
-  }
-
-  function removeFromCart(id) {
-    setCart(prev => prev.filter(i => i.id !== id))
-  }
-
-  function updateQty(id, delta) {
-    setCart(prev =>
-      prev
-        .map(i => i.id === id ? { ...i, qty: i.qty + delta } : i)
-        .filter(i => i.qty > 0)   // auto-remove if qty hits 0
-    )
-  }
-
-  const cartCount = cart.reduce((sum, i) => sum + i.qty, 0)
+function AppContent() {
+  const { cart, addToCart, removeFromCart, updateQty, cartCount } = useCart()
 
   return (
-    <BrowserRouter basename="/brew-haven-react/">
+    <>
       <div className="grain-overlay" aria-hidden="true"></div>
       <Navbar cartCount={cartCount} />
+      <CartDrawer />
+      <CheckoutModal />
+
       <Routes>
-        <Route path="/"            element={<Home onAddToCart={addToCart} />} />
-        <Route path="/menu"        element={<Menu onAddToCart={addToCart} />} />
+        <Route path="/" element={<Home onAddToCart={addToCart} />} />
+        <Route path="/menu" element={<Menu onAddToCart={addToCart} />} />
         <Route path="/reservation" element={<Reservation />} />
-        <Route path="/contact"     element={<Contact />} />
-        <Route path="/cart"        element={<Cart cart={cart} onRemove={removeFromCart} onUpdateQty={updateQty} />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              cart={cart}
+              onRemove={removeFromCart}
+              onUpdateQty={updateQty}
+            />
+          }
+        />
       </Routes>
+
       <Footer />
+
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: 'var(--bg-card)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-strong)',
+            fontFamily: 'var(--font-body)',
+          },
+          actionButtonStyle: {
+            background: 'var(--gold)',
+            color: '#fff',
+            fontWeight: 500,
+          },
+        }}
+      />
+    </>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter basename="/brew-haven-react/">
+      <CartProvider>
+        <AppContent />
+      </CartProvider>
     </BrowserRouter>
   )
 }
